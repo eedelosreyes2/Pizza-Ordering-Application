@@ -153,10 +153,8 @@ public class PizzaWebAppPanel extends JPanel {
 	// delete item popup
 	private JDialog editItemDialog;
 	private String editItemType;
-	private int editItemQuantity;
 	private JButton deleteItemFinalButton;
-	private JComboBox<Object> chooseItemQuantity;
-	private JButton setItemQuantityButton;
+	private JButton cancelButton;
 	
 	// checkout popup
 	private JDialog checkoutDialog;
@@ -1396,41 +1394,27 @@ public class PizzaWebAppPanel extends JPanel {
 		editItemDialog = new JDialog();
 		editItemDialog.setTitle("Edit");
 		editItemDialog.setLocationRelativeTo(button);
-		editItemDialog.setPreferredSize(dialogDimension);
+		editItemDialog.setPreferredSize(new Dimension(width/ 4, height / 6));
 		editItemDialog.setResizable(false);
 		editItemDialog.setModal(true);
 		
-		// init panel
+		// init panels
 		JPanel editItemPanel = new JPanel();
 		editItemPanel.setLayout(new BoxLayout(editItemPanel, BoxLayout.Y_AXIS));
 		editItemPanel.setBackground(blue);
 		addLabel("<html>Delete " + editItemType + "?</html>", "Arial", 20, white, editItemPanel, Component.CENTER_ALIGNMENT);
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+		buttonsPanel.setBackground(blue);
+		editItemPanel.add(buttonsPanel);
 		
-		// init button
+		// init buttons
 		deleteItemFinalButton = new JButton("Delete");
+		cancelButton = new JButton("Cancel");
 		deleteItemFinalButton.addActionListener(new ButtonListener());
-		editItemPanel.add(deleteItemFinalButton);
-		
-		// init set quantity combobox
-		chooseItemQuantity = new JComboBox<Object>();
-		chooseItemQuantity.addItem("<choose new quantity>");
-		chooseItemQuantity.addItem(1);
-		chooseItemQuantity.addItem(2);
-		chooseItemQuantity.addItem(3);
-		chooseItemQuantity.addItem(4);
-		chooseItemQuantity.addItem(5);
-		chooseItemQuantity.addItem(6);
-		chooseItemQuantity.addItem(7);
-		chooseItemQuantity.addItem(8);
-		chooseItemQuantity.addItem(9);
-		chooseItemQuantity.addItem(10);
-		editItemPanel.add(chooseItemQuantity);
-		editItemQuantity = (int)chooseItemQuantity.getSelectedIndex();
-		
-		// init set new quantity button
-		setItemQuantityButton = new JButton("Set quantity");
-		setItemQuantityButton.addActionListener(new ButtonListener());
-		editItemPanel.add(setItemQuantityButton);
+		cancelButton.addActionListener(new ButtonListener());
+		buttonsPanel.add(deleteItemFinalButton);
+		buttonsPanel.add(cancelButton);
 		
 		// finalize
 		editItemDialog.add(editItemPanel);
@@ -1897,11 +1881,8 @@ public class PizzaWebAppPanel extends JPanel {
 				}
 				createCartPanel();
 			}
-			if (b.equals(setItemQuantityButton)) {
-				System.out.println(editItemQuantity);
-				pd.setItemQuantity(editItemType, editItemQuantity);
+			if (b.equals(cancelButton)) {
 				editItemDialog.setVisible(false);
-				createCartPanel();
 			}
 			if (b.equals(checkoutButton)) {
 				createCheckoutPopup();
